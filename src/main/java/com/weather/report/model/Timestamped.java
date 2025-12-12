@@ -2,9 +2,12 @@ package com.weather.report.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.MappedSuperclass;
+
 /**
  * Base class carrying audit metadata (creator/updater and timestamps).
  */
+@MappedSuperclass
 public class Timestamped {
 
   private String createdBy;
