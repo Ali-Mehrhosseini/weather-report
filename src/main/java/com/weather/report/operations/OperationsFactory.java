@@ -1,5 +1,10 @@
 package com.weather.report.operations;
 
+import com.weather.report.operations.impl.GatewayOperationsImpl;
+import com.weather.report.operations.impl.NetworkOperationsImpl;
+import com.weather.report.operations.impl.SensorOperationsImpl;
+import com.weather.report.operations.impl.TopologyOperationsImpl;
+
 /**
  * Central factory providing concrete implementations of the operations
  * interfaces.
@@ -16,28 +21,28 @@ public final class OperationsFactory {
    * @return implementation of {@link NetworkOperations} configured for R1/R4
    */
   public static NetworkOperations getNetworkOperations() {
-    return null;
+    return new NetworkOperationsImpl();
   }
 
   /**
    * @return implementation of {@link GatewayOperations} configured for R2/R4
    */
   public static GatewayOperations getGatewayOperations() {
-    return null;
+    return new GatewayOperationsImpl();
   }
 
   /**
    * @return implementation of {@link SensorOperations} configured for R3/R4
    */
   public static SensorOperations getSensorOperations() {
-    return null;
+    return new SensorOperationsImpl();
   }
 
   /**
    * @return implementation of {@link TopologyOperations} configured for R4
    */
   public static TopologyOperations getTopologyOperations() {
-    return null;
+    return new TopologyOperationsImpl();
   }
 
 }

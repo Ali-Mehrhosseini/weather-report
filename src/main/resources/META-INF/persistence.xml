@@ -6,6 +6,12 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.weather.report.model.entities.User</class>
         <class>com.weather.report.model.entities.Measurement</class>
+        <class>com.weather.report.model.entities.Network</class>
+        <class>com.weather.report.model.entities.Gateway</class>
+        <class>com.weather.report.model.entities.Sensor</class>
+        <class>com.weather.report.model.entities.Operator</class>
+        <class>com.weather.report.model.entities.Parameter</class>
+        <class>com.weather.report.model.entities.Threshold</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver" />
             <property name="jakarta.persistence.jdbc.url"

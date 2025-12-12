@@ -2,7 +2,11 @@ package com.weather.report.repositories;
 
 import java.util.List;
 
+import com.weather.report.persistence.PersistenceManager;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 /**
  * Generic repository exposing basic CRUD operations backed by the persistence
@@ -25,6 +29,7 @@ public class CRUDRepository<T, ID> {
    * @param entityClass entity class handled by this repository
    */
   public CRUDRepository(Class<T> entityClass) {
+    this.entityClass = entityClass;
   }
 
   /**
@@ -49,7 +54,17 @@ public class CRUDRepository<T, ID> {
    * @return persisted entity
    */
   public T create(T entity) {
-    return null;
+    EntityManager em = PersistenceManager.getEntityManager();
+    EntityTransaction tx = em.getTransaction();
+    try {
+      tx.begin();
+      em.persist(entity);
+      tx.commit();
+      return entity;
+    } catch (Exception e) {
+      if (tx.isActive()) tx.rollback();
+      throw e;
+    }
   }
 
   /**
@@ -59,7 +74,8 @@ public class CRUDRepository<T, ID> {
    * @return found entity or {@code null} if absent
    */
   public T read(ID id) {
-    return null;
+    EntityManager em = PersistenceManager.getEntityManager();
+    return em.find(entityClass, id);
   }
 
   /**
@@ -68,7 +84,8 @@ public class CRUDRepository<T, ID> {
    * @return list of all entities
    */
   public List<T> read() {
-    return null;
+    EntityManager em = PersistenceManager.getEntityManager();
+    return em.createQuery("SELECT e FROM " + getEntityName() + " e", entityClass).getResultList();
   }
 
   /**
@@ -78,7 +95,17 @@ public class CRUDRepository<T, ID> {
    * @return updated entity
    */
   public T update(T entity) {
-    return null;
+    EntityManager em = PersistenceManager.getEntityManager();
+    EntityTransaction tx = em.getTransaction();
+    try {
+      tx.begin();
+      T merged = em.merge(entity);
+      tx.commit();
+      return merged;
+    } catch (Exception e) {
+      if (tx.isActive()) tx.rollback();
+      throw e;
+    }
   }
 
   /**
@@ -88,7 +115,20 @@ public class CRUDRepository<T, ID> {
    * @return deleted entity
    */
   public T delete(ID id) {
-    return null;
+    EntityManager em = PersistenceManager.getEntityManager();
+    EntityTransaction tx = em.getTransaction();
+    try {
+      tx.begin();
+      T entity = em.find(entityClass, id);
+      if (entity != null) {
+        em.remove(entity);
+      }
+      tx.commit();
+      return entity;
+    } catch (Exception e) {
+      if (tx.isActive()) tx.rollback();
+      throw e;
+    }
   }
 
 }
