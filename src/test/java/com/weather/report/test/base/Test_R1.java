@@ -162,7 +162,7 @@ public class Test_R1 extends BasePersistenceTest {
   void deleteNetworkShouldFailWhenNetworkDoesNotExist() {
     Assertions.assertThrows(
         ElementNotFoundException.class,
-        () -> facade.networks().deleteNetwork("UNKNOWN", MAINTAINER_USERNAME));
+        () -> facade.networks().deleteNetwork(NET_99, MAINTAINER_USERNAME));
   }
 
   @Test
@@ -262,10 +262,22 @@ public class Test_R1 extends BasePersistenceTest {
   }
 
   @Test
-  void addOperatorToNetworkShouldFailWhenNetworkOrOperatorDoesNotExist() {
+  void addOperatorToNetworkShouldFailWhenNetworkDoesNotExist() throws WeatherReportException {
+    facade.networks().createOperator(OPERATOR_ALICE_FIRST, OPERATOR_ALICE_LAST, OPERATOR_ALICE_EMAIL, "123",
+        MAINTAINER_USERNAME);
+
     Assertions.assertThrows(
         ElementNotFoundException.class,
-        () -> facade.networks().addOperatorToNetwork(NET_99, "unknown@example.com", MAINTAINER_USERNAME));
+        () -> facade.networks().addOperatorToNetwork(NET_99, OPERATOR_ALICE_EMAIL, MAINTAINER_USERNAME));
+  }
+
+  @Test
+  void addOperatorToNetworkShouldFailWhenOperatorDoesNotExist() throws WeatherReportException {
+    facade.networks().createNetwork(NET_01, networkName("1"), desc("1"), MAINTAINER_USERNAME);
+
+    Assertions.assertThrows(
+        ElementNotFoundException.class,
+        () -> facade.networks().addOperatorToNetwork(NET_01, "unknown@example.com", MAINTAINER_USERNAME));
   }
 
   @Test
@@ -456,7 +468,7 @@ public class Test_R1 extends BasePersistenceTest {
       alerting.verify(
           () -> AlertingService.notifyThresholdViolation(
               argThat(ops -> ops.stream().anyMatch(o -> OPERATOR_ALICE_EMAIL.equals(o.getEmail()))),
-              eq(sensorName("1"))));
+              eq(SENSOR_010101)));
       alerting.verifyNoMoreInteractions();
     }
   }

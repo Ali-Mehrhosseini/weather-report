@@ -561,6 +561,7 @@ even if the body of `checkMeasurement` is not implemented in the branch related 
 The `GatewayOperations` interface groups methods that allow:
 
 - creating, updating and deleting gateways;
+  - deleting a Gateway also deletes all its associated parameters.
 - defining and modifying the parameters associated with gateways;
 - producing the gateway report.
 
@@ -662,6 +663,7 @@ It is sufficient that the call to `checkMeasurement` is present at the correct p
 The `SensorOperations` interface contains methods to:
 
 - create, update and delete sensors;
+  - deleting a Sensor also deletes any associated threshold.
 - manage thresholds associated with sensors;
 - retrieve sensors based on their codes;
 - obtain the report for a specific sensor.
