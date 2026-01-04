@@ -160,7 +160,7 @@ public class Test_R2 extends BasePersistenceTest {
   void deleteGatewayShouldFailWhenGatewayDoesNotExist() {
     Assertions.assertThrows(
         ElementNotFoundException.class,
-        () -> facade.gateways().deleteGateway("GW9999", MAINTAINER_USERNAME));
+        () -> facade.gateways().deleteGateway(GW_UNKNOWN, MAINTAINER_USERNAME));
   }
 
   @Test
@@ -296,7 +296,7 @@ public class Test_R2 extends BasePersistenceTest {
   void updateParameterShouldFailWhenGatewayDoesNotExist() {
     Assertions.assertThrows(
         ElementNotFoundException.class,
-        () -> facade.gateways().updateParameter("UNKNOWN", PARAMETER_P01, 10.0, MAINTAINER_USERNAME));
+        () -> facade.gateways().updateParameter(GW_UNKNOWN, PARAMETER_P01, 10.0, MAINTAINER_USERNAME));
   }
 
   @Test

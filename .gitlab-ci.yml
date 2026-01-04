@@ -8,14 +8,36 @@ variables:
     --fail-at-end
     --show-version
 
-verify:
+test:
   stage: test
   tags:
     - oop
   script:
     - "DISPLAY=:1 mvn $MAVEN_CLI_OPTS test"
+  rules:
+    # Only to be used by teachers!
+    # Never run this on *-no-test branches
+    - if: '$CI_COMMIT_REF_NAME =~ /^.*-no-test$/ || $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^.*-no-test$/'
+      when: never
+    # Only run it on other branches/MRs
+    - when: on_success
   artifacts:
     when: always
     reports:
       junit:
         - target/surefire-reports/TEST-*.xml
+
+# Only to be used by teachers!
+# Dummy job to satisfy 'pipelines must succeed' for no-test branches
+no_test_dummy:
+  stage: test
+  tags:
+    - oop
+  script:
+    - "echo \"-no-test branch: tests intentionally skipped\""
+  rules:
+    # Only run this on *-no-test branches
+    - if: '$CI_COMMIT_REF_NAME =~ /^.*-no-test$/ || $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ /^.*-no-test$/'
+      when: on_success
+    # Never run it on other branches/MRs
+    - when: never
