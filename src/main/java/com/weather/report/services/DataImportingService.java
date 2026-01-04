@@ -157,8 +157,8 @@ public class DataImportingService {
       if (network != null) {
         Collection<Operator> operators = network.getOperators();
         if (operators != null && !operators.isEmpty()) {
-          // Use sensor name for notification, not sensor code
-          AlertingService.notifyThresholdViolation(operators, currentSensor.getName());
+          // Use sensor code for notification (as per updated test requirement)
+          AlertingService.notifyThresholdViolation(operators, measurement.getSensorCode());
         }
       }
     }
